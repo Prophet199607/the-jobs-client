@@ -1,0 +1,93 @@
+html {
+  font-family: "Poppins", sans-serif !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* @layer components{ */
+.size-selector input:checked + label {
+  @apply bg-primary text-white;
+}
+/* } */
+/* @layer components{ */
+.color-selector input:checked + label {
+  @apply ring-2 ring-primary;
+}
+/* } */
+
+input,
+textarea,
+button,
+select,
+a,
+div,
+span {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+::v-deep h1 {
+  font-size: 2em;
+}
+::v-deep h2 {
+  font-size: 1.5em;
+}
+::v-deep h3 {
+  font-size: 1.17em;
+}
+
+::v-deep .ql-align-center {
+  text-align: center !important;
+}
+
+::v-deep .ql-align-right {
+  text-align: right;
+}
+
+::v-deep ul li:not(.ql-direction-rtl) {
+  padding-left: 3em;
+}
+
+::v-deep .ql-indent-1:not(.ql-direction-rtl) {
+  padding-left: 3em;
+}
+
+::v-deep li:not(.ql-direction-rtl)::before {
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+  text-align: right;
+}
+
+::v-deep ul > li::before {
+  content: "\2022";
+}
+
+::v-deep li::before {
+  display: inline-block;
+  white-space: nowrap;
+  width: 1.2em;
+}
+
+::v-deep a {
+  text-decoration: underline;
+  color: #06c;
+}
+
+/* ol */
+
+::v-deep ol,
+ul {
+  padding-left: 4em;
+}
+
+::v-deep ol li:before {
+  content: counter(list-0, decimal) ". ";
+}
+
+::v-deep ol li {
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+  counter-increment: list-0;
+}
