@@ -10,7 +10,7 @@
           <div class="grid grid-rows-1 md:grid-rows-2 grid-cols-1 md:grid-cols-2 gap-4">
             <!-- single input start -->
             <div>
-              <label for="" class="text-gray-600 mb-2 block">Country</label>
+              <label for="" class="text-gray-600 mb-2 block">Specialized Country</label>
               <ValidationProvider v-slot="{ errors }" rules="select">
                 <select
                   class="block w-full text-base border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
@@ -34,10 +34,10 @@
             <!-- single input end -->
             <!-- single input start -->
             <div class="row-span-4 flex flex-col items-center justify-start gap-2">
-              <label for="" class="text-gray-600 block">Product Image</label>
+              <label for="" class="text-gray-600 block">Consultant Image</label>
               <img
                 :src="image_prev"
-                class="cursor-pointer pb-3 product-image"
+                class="cursor-pointer pb-3 product-image rounded-full"
                 alt=""
                 for="product_image"
               />
@@ -53,7 +53,7 @@
             <!-- single input end -->
             <!-- single input start -->
             <div>
-              <label for="" class="text-gray-600 mb-2 block">Category</label>
+              <label for="" class="text-gray-600 mb-2 block">Specialized Job Type</label>
               <select
                 class="block w-full text-base border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                 v-model="product.category_id"
@@ -71,7 +71,7 @@
             <!-- single input end -->
             <!-- single input start -->
             <div>
-              <label for="" class="text-gray-600 mb-2 block">Product name</label>
+              <label for="" class="text-gray-600 mb-2 block">Consultant name</label>
               <ValidationProvider v-slot="{ errors }" rules="required">
                 <input
                   type="text"
@@ -79,26 +79,6 @@
                   placeholder="Enter product name"
                   v-model="product.product_name"
                 />
-                <span class="input-invalid-message text-red-500 text-xs">
-                  {{ errors[0] }}
-                </span>
-              </ValidationProvider>
-            </div>
-            <!-- single input end -->
-
-            <!-- single input start -->
-            <div>
-              <label for="" class="text-gray-600 mb-2 block">Unit</label>
-              <ValidationProvider v-slot="{ errors }" rules="select">
-                <select
-                  class="block w-full text-base border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                  v-model="product.unit"
-                >
-                  <option value="0">-- select --</option>
-                  <option v-for="(unit, index) in units" :key="index" :value="unit.id">
-                    {{ unit.unit_name }}
-                  </option>
-                </select>
                 <span class="input-invalid-message text-red-500 text-xs">
                   {{ errors[0] }}
                 </span>
