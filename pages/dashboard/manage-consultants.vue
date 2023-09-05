@@ -12,6 +12,17 @@
 
       <p class="text-gray-500 font-medium">Manage Consultants</p>
     </div>
+    <div class="flex justify-end my-5 items-center">
+      <input
+        type="search"
+        id="search-dropdown"
+        v-model="search"
+        @keyup="searching"
+        class="block p-2.5 z-20 w-60 mt-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
+        placeholder="Search consultants..."
+        required=""
+      />
+    </div>
     <!-- breadcrumbs end -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left text-gray-500">
@@ -31,7 +42,7 @@
         <tbody>
           <tr
             class="bg-white border-b hover:bg-gray-50"
-            v-for="consultant in consultants.data"
+            v-for="consultant in consultants.content"
             :key="consultant.id"
           >
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -53,24 +64,34 @@
               {{ consultant.jobType.jobType }}
             </td>
             <td class="px-2 md:px-6 py-4 text-gray-900 text-right">
-              <a
-                href="#"
-                class="font-medium text-blue-600"
+              <div
+                class="font-medium text-blue-600 cursor-pointer"
                 style="background: transparent; color: rgb(37 99 235)"
-                @click="editDepartment(consultant)"
-                >Edit</a
+                @click="editConsultant(consultant)"
               >
+                Edit
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <div class="my-3 float-right mx-3">
+      <div
+        class="my-3 float-right mx-3"
+        v-if="consultants.content && consultants.content.length > 3"
+      >
         <pagination
-          align="right"
-          :data="departments"
-          :limit="3"
-          @pagination-change-page="loadAllDepartments"
-        ></pagination>
+          v-model="page"
+          :records="[consultants.totalElements]"
+          :per-page="3"
+          :data="{
+            currentPage: consultants.number + 1,
+            totalPages: consultants.totalPages,
+          }"
+          :text="{
+            count: 'Showing page {page} out of {pages}',
+          }"
+          @paginate="loadAllConsultants"
+        />
       </div>
     </div>
   </div>
@@ -88,28 +109,14 @@ export default {
 
   data() {
     return {
-      editMode: false,
-      showDepartmentModal: false,
-      showDepartmentImportModal: false,
-      department: {
-        id: "",
-        department_name: "",
-        department_display_name: "",
-        department_image: "",
-        status: true,
-      },
-      image_prev: `${process.env.API_IMAGE_BASE_URL}departments/default.webp`,
-      remove_image: false,
-      department_import: "",
+      search: "",
+      page: 1,
     };
   },
 
   computed: {
     consultants() {
       return { ...this.$store.getters["consultant/getAllConsultants"] };
-    },
-    departments() {
-      return { ...this.$store.getters["departments/getAllDepartments"] };
     },
     loggedInUserRoles() {
       return this.$store.getters["auth-api/getLoggedInUserRoles"];
@@ -120,11 +127,7 @@ export default {
     this.loadAllConsultants();
   },
 
-  mounted() {
-    // if (!this.departments || !this.departments.data) {
-    //   this.loadAllDepartments();
-    // }
-  },
+  mounted() {},
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -138,99 +141,28 @@ export default {
 
   methods: {
     loadAllConsultants(page = 1) {
-      this.$store.dispatch("consultant/loadAllConsultants", page).then((res) => {});
+      this.$store
+        .dispatch("consultant/loadAllConsultantsWithPagination", page)
+        .then((res) => {});
     },
 
-    loadAllDepartments(page = 1) {
-      this.$store.dispatch("departments/loadAllDepartments", page);
-    },
-
-    openDepartmentModal() {
-      this.showDepartmentModal = true;
-    },
-
-    closeDepartmentModal() {
-      this.showDepartmentModal = false;
-    },
-
-    editDepartment({ ...department }) {
-      this.editMode = true;
-      this.openDepartmentModal();
-      this.department = department;
-      this.image_prev = process.env.API_IMAGE_BASE_URL + department.department_image;
-    },
-
-    saveDepartment() {
-      let storeAction = "departments/saveDepartment";
-      if (this.editMode) storeAction = "departments/updateDepartment";
-
-      let formData = new FormData();
-      formData.append("id", this.department.id);
-      formData.append("department_name", this.department.department_name);
-      formData.append("department_display_name", this.department.department_display_name);
-      formData.append("department_image", this.department.department_image);
-      formData.append("remove_image", this.remove_image);
-      formData.append("status", this.department.status == true ? 1 : 0);
-
-      this.$store.dispatch(storeAction, formData).then((res) => {
-        swal("Success!", res.message, "success");
-        this.showDepartmentModal = false;
-        this.clearForm();
+    editConsultant({ ...consultant }) {
+      this.$router.push({
+        path: "/dashboard/create-consultant",
+        query: { id_: consultant.consultantId },
       });
     },
 
-    openProductImportModal() {
-      this.showDepartmentImportModal = true;
-    },
-
-    changeFileImport(e) {
-      const file = e.target.files[0];
-      this.department_import = file;
-    },
-
-    downloadSampleProductExcelTemplate() {
-      this.$store.dispatch("departments/downloadSampleDepartmentExcelTemplate");
-    },
-
-    uploadDepartments() {
-      let formData = new FormData();
-      formData.append("department_import", this.department_import);
-
-      this.$store.dispatch("departments/uploadDepartments", formData).then((res) => {
-        this.closeDepartmentImportModal();
-        swal("Success!", res.message, "success");
-      });
-    },
-
-    closeDepartmentImportModal() {
-      this.showDepartmentImportModal = false;
-    },
-
-    removeDepartmentImage() {
-      this.remove_image = true;
-      this.department.department_image = "";
-      this.image_prev = `${process.env.API_IMAGE_BASE_URL}departments/default.webp`;
-    },
-
-    changeImage(e) {
-      const file = e.target.files[0];
-      this.image_prev = URL.createObjectURL(file);
-      this.department.department_image = file;
-    },
-
-    clearForm() {
-      this.showDepartmentModal = false;
-      this.editMode = false;
-      this.$refs.departmentForm.reset();
-      this.department = {
-        id: "",
-        department_name: "",
-        department_display_name: "",
-        department_image: "",
-        status: true,
-      };
-      this.image_prev = `${process.env.API_IMAGE_BASE_URL}departments/default.webp`;
-    },
+    searching: _.debounce(function () {
+      this.$store
+        .dispatch("consultant/searchConsultants", {
+          search_term: this.search,
+          page: this.page,
+        })
+        .then((res) => {
+          this.customers = res;
+        });
+    }, 1000),
   },
 };
 </script>
@@ -250,21 +182,25 @@ export default {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #fd3d57;
+  color: #e88c02;
   background-color: #fff;
   border: 1px solid #dee2e6;
 }
 ::v-deep .page-item.active .page-link {
   z-index: 3;
   color: #fff;
-  background-color: #fd3d57;
-  border-color: #fd3d57;
+  background-color: #e88c02;
+  border-color: #e88c02;
 }
 ::v-deep a:hover {
-  color: #fd3d57;
+  color: #e88c02;
   text-decoration: none;
   background-color: #adadad83;
   color: #fff;
+}
+::v-deep .VuePagination__count {
+  margin-top: 5px;
+  font-size: 13px;
 }
 /* pagination styles end */
 </style>

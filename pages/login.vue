@@ -148,7 +148,7 @@ export default {
           password: this.password,
         })
         .then((res) => {
-          this.$router.push("/shop");
+          this.$router.push("/dashboard");
         })
         .catch((err) => {
           this.logginError = true;

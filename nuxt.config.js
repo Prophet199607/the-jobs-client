@@ -68,6 +68,7 @@ export default {
     "~/plugins/vee-validate.js",
     "~/plugins/filters.js",
     "~/plugins/laravel-vue-pagination.js",
+    "~/plugins/vue-pagination-2.js",
     "~/plugins/vue-search-select.js",
     "~/plugins/vue-loading-skeleton.js",
     { src: "~/plugins/flowbite.js", ssr: false },
@@ -172,6 +173,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["vee-validate", "laravel-vue-pagination"],
+    transpile: ["vee-validate", "vue-pagination-2"],
   },
 };

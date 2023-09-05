@@ -221,14 +221,14 @@
                 <div class="text-sm leading-3">Contact Us</div>
               </div>
             </li>
-            <li class="my-0 cursor-pointer" v-if="isUserLoggedIn">
+            <!-- <li class="my-0 cursor-pointer" v-if="isUserLoggedIn">
               <div
                 @click="navigateToAccount"
                 class="flex items-center justify-start px-3 py-3 mr-3 rounded text-center text-gray-700 hover:bg-primary hover:text-white transition relative"
               >
                 <div class="text-sm leading-3">Dashboard</div>
               </div>
-            </li>
+            </li> -->
           </ul>
         </div>
         <!-- mobile menu end -->
@@ -243,7 +243,7 @@
       <div class="container flex justify-between">
         <!-- navbar links start -->
         <div class="hidden md:flex items-center justify-between flex-grow pl-12">
-          <div class="flex items-center space-x-6 capitalize text-sm">
+          <div class="flex items-center space-x-6 capitalize text-base">
             <NuxtLink to="/" class="text-gray-200 hover:text-white transition"
               >Home</NuxtLink
             >
@@ -256,16 +256,16 @@
             <NuxtLink to="/contact-us" class="text-gray-200 hover:text-white transition"
               >Contact Us</NuxtLink
             >
-            <div
+            <!-- <div
               v-if="isUserLoggedIn"
               href="#"
               @click="navigateToAccount"
               class="text-gray-200 hover:text-white transition cursor-pointer"
             >
               Dashboard
-            </div>
+            </div> -->
           </div>
-          <div class="flex gap-1 text-sm" v-if="!isUserLoggedIn">
+          <div class="flex gap-1 text-base" v-if="!isUserLoggedIn">
             <NuxtLink to="/login" class="text-gray-200 hover:text-white transition"
               >Login</NuxtLink
             >
@@ -274,15 +274,13 @@
               >Register</NuxtLink
             >
           </div>
-          <div class="flex gap-1" v-else>
-            <p class="text-gray-200 hover:text-white transition">
-              Hi {{ loggedInUserDetails.fullName.split(" ")[0] }}! /
-            </p>
+          <div class="flex gap-1 text-base" v-else>
             <p
               class="text-gray-200 hover:text-white transition cursor-pointer"
-              @click="logout"
+              @click="navigateToAccount"
             >
-              Logout
+              <i class="fa fa-cog" aria-hidden="true"></i>
+              Control Panel
             </p>
           </div>
         </div>
@@ -414,12 +412,6 @@ export default {
 
     closeDropdownList() {},
 
-    async logout() {
-      this.$store.dispatch("auth-api/logout").then((res) => {
-        this.$router.push("/");
-      });
-    },
-
     getImage(image_path) {
       if (!image_path) {
         image_path = "company/default.png";
@@ -436,7 +428,7 @@ export default {
 
     navigateToAccount() {
       if (this.isUserLoggedIn && !this.loggedInUserRoles.includes("ROLE_USER")) {
-        this.$router.push({ path: "/merchant" });
+        this.$router.push({ path: "/dashboard" });
       } else {
         this.$router.push({ path: "/customer" });
       }

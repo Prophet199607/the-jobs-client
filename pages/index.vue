@@ -428,7 +428,7 @@ export default {
   },
 
   mounted() {
-    this.loadHomeData();
+    // this.loadHomeData();
   },
 
   methods: {

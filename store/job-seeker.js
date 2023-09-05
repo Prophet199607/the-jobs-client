@@ -1,40 +1,25 @@
 export const state = () => ({
-  consultants: [],
+  jobSeekers: [],
 });
 
 export const getters = {
-  getAllConsultants: (state) => state.consultants,
+  getAllJobSeekers: (state) => state.jobSeekers,
 };
 
 export const mutations = {
-  //   UPDATE_DEPARTMENT(state, department) {
-  //     const index = state.all_departments.data.findIndex(
-  //       (el) => el.id == department.id
-  //     );
-  //     state.all_departments.data.splice(index, 1, department);
-  //   },
-
-  //   SET_ACTIVE_DEPARTMENTS(state, departments) {
-  //     state.active_departments = departments;
-  //   },
-
-  SET_ALL_CONSULTANTS(state, consultants) {
-    state.consultants = consultants;
+  SET_ALL_JOB_SEEKERS(state, jobSeekers) {
+    state.jobSeekers = jobSeekers;
   },
-
-  //   SET_SELECTED_DEPARTMENT(state, department) {
-  //     state.getSelectedDepartment = department;
-  //   },
 };
 
 export const actions = {
-  saveConsultant({ commit }, payload) {
+  saveJobSeeker({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
       try {
         const data = await this.$axios.$post(
-          "/consultant",
-          payload.consultant,
+          "/job-seeker",
+          payload.job_seeker,
           {
             headers: {
               Authorization: "Bearer " + authToken,
@@ -48,12 +33,12 @@ export const actions = {
     });
   },
 
-  updateConsultant({ commit }, payload) {
+  updateJobSeeker({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
       const data = await this.$axios.$put(
-        `/consultant/${payload.consultant.consultantId}`,
-        payload.consultant,
+        `/job-seeker/${payload.job_seeker.jobSeekerId}`,
+        payload.job_seeker,
         {
           headers: {
             Authorization: "Bearer " + authToken,
@@ -64,11 +49,11 @@ export const actions = {
     });
   },
 
-  getConsultantDetails({ commit }, consultantId) {
+  getJobSeekerDetails({ commit }, job_seekerId) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
       const { data } = await this.$axios.$get(
-        `/consultant/findById/${consultantId}`,
+        `/job-seeker/findById/${job_seekerId}`,
         {
           headers: {
             Authorization: "Bearer " + authToken,
@@ -79,47 +64,47 @@ export const actions = {
     });
   },
 
-  searchConsultants({ commit }, payload) {
+  searchJobSeekers({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
       const { data } = await this.$axios.$get(
-        `/consultant?keyword=${payload.search_term}&page=${payload.page}&size=3`,
+        `/job-seeker?keyword=${payload.search_term}&page=${payload.page}&size=3`,
         {
           headers: {
             Authorization: "Bearer " + authToken,
           },
         }
       );
-      commit("SET_ALL_CONSULTANTS", data);
+      commit("SET_ALL_JOB_SEEKERS", data);
       resolve(data);
     });
   },
 
-  loadAllConsultants({ commit }) {
+  loadAllJobSeekers({ commit }) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
-      const data = await this.$axios.$get(`/consultant/all`, {
+      const data = await this.$axios.$get(`/job-seeker/all`, {
         headers: {
           Authorization: "Bearer " + authToken,
         },
       });
-      commit("SET_ALL_CONSULTANTS", data);
+      commit("SET_ALL_JOB_SEEKERS", data);
       resolve(data);
     });
   },
 
-  loadAllConsultantsWithPagination({ commit }, page) {
+  loadAllJobSeekersWithPagination({ commit }, page) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
       const { data } = await this.$axios.$get(
-        `/consultant/all/paginate?page=${page}&size=3`,
+        `/job-seeker/all/paginate?page=${page}&size=3`,
         {
           headers: {
             Authorization: "Bearer " + authToken,
           },
         }
       );
-      commit("SET_ALL_CONSULTANTS", data);
+      commit("SET_ALL_JOB_SEEKERS", data);
       resolve(data);
     });
   },
