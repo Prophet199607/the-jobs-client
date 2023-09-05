@@ -4,7 +4,7 @@
       <h2 class="text-2xl uppercase font-medium mb-1">Create an account</h2>
       <p class="text-gray-600 mb-6 text-sm">Register here if you don't have account</p>
       <ValidationObserver v-slot="{ handleSubmit }" ref="form">
-        <form @submit.prevent="handleSubmit(registerCustomer)">
+        <form @submit.prevent="handleSubmit(registerJobSeeker)">
           <div class="space-y-4">
             <!-- registration form start -->
             <div class="col-span-12 row-span-2 md:col-span-8 rounded">
@@ -17,7 +17,7 @@
                     <ValidationProvider v-slot="{ errors }" rules="required">
                       <input
                         type="text"
-                        v-model="form.first_name"
+                        v-model="job_seeker.firstName"
                         class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                         placeholder="Enter first name"
                       />
@@ -33,7 +33,7 @@
                     <ValidationProvider v-slot="{ errors }" rules="required">
                       <input
                         type="text"
-                        v-model="form.last_name"
+                        v-model="job_seeker.lastName"
                         class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                         placeholder="Enter last name"
                       />
@@ -43,91 +43,7 @@
                     </ValidationProvider>
                   </div>
                 </div>
-                <div>
-                  <label class="text-gray-600 mb-2 block text-sm"
-                    >Province<span class="text-primary">*</span></label
-                  >
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <model-select
-                      class="block w-full border border-gray-300 px-4 placeholder:text-sm py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                      :options="provinces"
-                      v-model="form.province"
-                      @input="billing_loadDistricts"
-                      placeholder="Select your province"
-                    >
-                    </model-select>
-                    <span class="input-invalid-message text-red-500 text-xs">
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-                <div>
-                  <label class="text-gray-600 mb-2 block text-sm"
-                    >District<span class="text-primary">*</span></label
-                  >
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <model-select
-                      class="block w-full border border-gray-300 px-4 placeholder:text-sm py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                      :options="districts"
-                      v-model="form.district"
-                      @input="billing_loadCities"
-                      placeholder="Select your district"
-                    >
-                    </model-select>
-                    <span class="input-invalid-message text-red-500 text-xs">
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-                <div>
-                  <label class="text-gray-600 mb-2 block text-sm"
-                    >City<span class="text-primary">*</span></label
-                  >
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <model-select
-                      class="block w-full border border-gray-300 px-4 placeholder:text-sm py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                      :options="cities"
-                      v-model="form.city"
-                      placeholder="Select your city"
-                    >
-                    </model-select>
-                    <span class="input-invalid-message text-red-500 text-xs">
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-                <div>
-                  <label class="text-gray-600 mb-2 block text-sm"
-                    >Street Address <span class="text-primary">*</span></label
-                  >
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <input
-                      type="text"
-                      v-model="form.street_address"
-                      class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                      placeholder="Enter street address"
-                    />
-                    <span class="input-invalid-message text-red-500 text-xs">
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
-                <div>
-                  <label class="text-gray-600 mb-2 block text-sm"
-                    >Zip Code <span class="text-primary">*</span></label
-                  >
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <input
-                      type="text"
-                      v-model="form.zip_code"
-                      class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                      placeholder="Enter zip code"
-                    />
-                    <span class="input-invalid-message text-red-500 text-xs">
-                      {{ errors[0] }}
-                    </span>
-                  </ValidationProvider>
-                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="text-gray-600 mb-2 block text-sm"
@@ -136,7 +52,7 @@
                     <ValidationProvider v-slot="{ errors }" rules="required">
                       <input
                         type="text"
-                        v-model="form.phone_number"
+                        v-model="job_seeker.contactNumber"
                         class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                         placeholder="Enter phone number"
                       />
@@ -151,7 +67,7 @@
                       <input
                         type="email"
                         name="Email"
-                        v-model="form.email"
+                        v-model="job_seeker.email"
                         class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                         placeholder="Enter email address"
                       />
@@ -165,17 +81,33 @@
             </div>
             <!-- registration form end -->
             <div>
+              <label class="text-gray-600 mb-2 block text-sm"
+                >User Name <span class="text-primary">*</span></label
+              >
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <input
+                  type="text"
+                  v-model="job_seeker.user.userName"
+                  class="block w-full border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
+                  placeholder="Enter user name"
+                />
+                <span class="input-invalid-message text-red-500 text-xs">
+                  {{ errors[0] }}
+                </span>
+              </ValidationProvider>
+            </div>
+            <div>
               <label class="text-gray-600 mb-2 block"
                 >Password<span class="text-primary">*</span></label
               >
               <ValidationProvider
                 v-slot="{ errors }"
-                rules="required|min:8"
+                rules="required|min:4"
                 vid="password"
               >
                 <input
                   type="password"
-                  v-model="form.password"
+                  v-model="job_seeker.user.password"
                   class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary focus:border-2 placeholder-gray-400"
                   placeholder="Enter your password"
                   name="password"
@@ -193,7 +125,7 @@
               <ValidationProvider v-slot="{ errors }" rules="required|confirmed:password">
                 <input
                   type="password"
-                  v-model="form.password_confiremed"
+                  v-model="job_seeker.user.passwordConfirmation"
                   class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary focus:border-2 placeholder-gray-400"
                   placeholder="Enter your password"
                   name="password_reset"
@@ -276,73 +208,56 @@ export default {
 
   data() {
     return {
-      provinces: [],
-      districts: [],
-      cities: [],
-      form: {
-        first_name: "",
-        last_name: "",
-        province: "",
-        district: "",
-        city: "",
-        street_address: "",
-        zip_code: "",
-        phone_number: "",
+      job_seeker: {
+        firstName: "",
+        lastName: "",
         email: "",
-        password: "",
-        password_confiremed: "",
+        contactNumber: "",
+        isActive: true,
+        user: {
+          userName: "",
+          password: "",
+          passwordConfirmation: "",
+        },
       },
       agreement: false,
     };
   },
 
-  created() {
-    this.billing_loadProvinces();
-  },
-
   methods: {
-    registerCustomer() {
+    registerJobSeeker() {
       if (this.agreement) {
-        this.$store.dispatch("customer/saveCustomerData", this.form).then((res) => {
-          this.$store.dispatch("settings/changVerifiedEmailSentStatus", true);
-          this.$router.push({
-            path: "/login",
+        this.job_seeker.user.email = this.job_seeker.email;
+        this.job_seeker.user.fullName =
+          this.job_seeker.firstName + " " + this.job_seeker.lastName;
+
+        this.$store
+          .dispatch("job-seeker/register", { job_seeker: this.job_seeker })
+          .then((res) => {
+            this.clearForm();
+            swal("Success!", "You have successfully registered", "success");
+            this.$router.push({
+              path: "/login",
+            });
           });
-        });
       }
     },
 
-    billing_loadProvinces() {
-      this.$store.dispatch("customer/loadProvinces").then((res) => {
-        this.provinces = res.map((province) => {
-          return {
-            value: province.id,
-            text: province.name_en,
-          };
-        });
-      });
-    },
-
-    billing_loadDistricts() {
-      this.$store.dispatch("customer/loadDistricts", this.form.province).then((res) => {
-        this.districts = res.map((district) => {
-          return {
-            value: district.id,
-            text: district.name_en,
-          };
-        });
-      });
-    },
-
-    billing_loadCities() {
-      this.$store.dispatch("customer/loadCities", this.form.district).then((res) => {
-        this.cities = res.map((city) => {
-          return {
-            value: city.id,
-            text: city.name_en,
-          };
-        });
-      });
+    clearForm() {
+      this.$refs.form.reset();
+      this.job_seeker = {
+        jobSeekerId: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        contactNumber: "",
+        isActive: true,
+        user: {
+          userName: "",
+          password: "",
+          passwordConfirmation: "",
+        },
+      };
     },
   },
 };

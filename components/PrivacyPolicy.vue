@@ -22,7 +22,7 @@ import swal from "sweetalert";
 
 export default {
   created() {
-    this.loadCompanyPrivacyPolicy();
+    // this.loadCompanyPrivacyPolicy();
   },
 
   computed: {

@@ -35,6 +35,7 @@ export const actions = {
         commit("SET_AUTHENTICATION", true);
         commit("SET_USER", data.user);
         commit("SET_ROLES", data.roles);
+        localStorage.setItem("loggedUserId", data.loggedUserId);
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("isAuthenticated", true);
         localStorage.setItem("user", JSON.stringify(data.user));
@@ -54,6 +55,7 @@ export const actions = {
       commit("SET_USER", null);
       commit("SET_ROLES", null);
       localStorage.removeItem("authToken");
+      localStorage.removeItem("loggedUserId");
       localStorage.removeItem("isAuthenticated");
       localStorage.removeItem("user");
       localStorage.removeItem("roles");

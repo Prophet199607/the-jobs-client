@@ -210,7 +210,7 @@ export default {
   created() {},
 
   mounted() {
-    this.loadCompanyData();
+    // this.loadCompanyData();
   },
 
   methods: {

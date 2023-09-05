@@ -35,20 +35,7 @@
             Profile
           </button>
         </li>
-        <li class="mr-2" role="presentation">
-          <button
-            class="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 dark:border-transparent text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700"
-            id="address-tab"
-            data-tabs-target="#address"
-            type="button"
-            role="tab"
-            aria-controls="address"
-            aria-selected="false"
-            @click="tabChange(2)"
-          >
-            Locations
-          </button>
-        </li>
+
         <li class="mr-2" role="presentation">
           <button
             class="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 dark:border-transparent text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700"
@@ -91,20 +78,6 @@
             Terms & Conditions
           </button>
         </li>
-        <li class="mr-2" role="presentation">
-          <button
-            class="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 dark:border-transparent text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700"
-            id="return-policy-tab"
-            data-tabs-target="#return-policy"
-            type="button"
-            role="tab"
-            aria-controls="return-policy"
-            aria-selected="false"
-            @click="tabChange(6)"
-          >
-            Return Policy
-          </button>
-        </li>
       </ul>
     </div>
     <div id="myTabContent">
@@ -117,17 +90,6 @@
       >
         <div class="space-y-4 text-sm md:text-sm">
           <merchant-profile></merchant-profile>
-        </div>
-      </div>
-      <div
-        class="p-4 rounded-lg"
-        :class="[selected_tab != 2 ? 'hidden' : 'block']"
-        id="address"
-        role="tabpanel"
-        aria-labelledby="address-tab"
-      >
-        <div class="space-y-4 text-sm md:text-sm">
-          <location-addresses></location-addresses>
         </div>
       </div>
       <div
@@ -161,17 +123,6 @@
       >
         <div class="space-y-4 text-sm md:text-sm">
           <terms-and-conditions></terms-and-conditions>
-        </div>
-      </div>
-      <div
-        class="p-4 rounded-lg"
-        :class="[selected_tab != 6 ? 'hidden' : 'block']"
-        id="return-policy"
-        role="tabpanel"
-        aria-labelledby="return-policy-tab"
-      >
-        <div class="space-y-4 text-sm md:text-sm">
-          <return-policy></return-policy>
         </div>
       </div>
     </div>

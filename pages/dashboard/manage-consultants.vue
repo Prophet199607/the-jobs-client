@@ -90,7 +90,7 @@
           :text="{
             count: 'Showing page {page} out of {pages}',
           }"
-          @paginate="loadAllConsultants"
+          @paginate="loadAllConsultantsWithPagination"
         />
       </div>
     </div>
@@ -116,7 +116,7 @@ export default {
 
   computed: {
     consultants() {
-      return { ...this.$store.getters["consultant/getAllConsultants"] };
+      return { ...this.$store.getters["consultant/getAllPaginatedConsultants"] };
     },
     loggedInUserRoles() {
       return this.$store.getters["auth-api/getLoggedInUserRoles"];
@@ -124,7 +124,7 @@ export default {
   },
 
   created() {
-    this.loadAllConsultants();
+    this.loadAllConsultantsWithPagination();
   },
 
   mounted() {},
@@ -140,7 +140,7 @@ export default {
   },
 
   methods: {
-    loadAllConsultants(page = 1) {
+    loadAllConsultantsWithPagination(page = 1) {
       this.$store
         .dispatch("consultant/loadAllConsultantsWithPagination", page)
         .then((res) => {});

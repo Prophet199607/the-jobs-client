@@ -1,8 +1,10 @@
 export const state = () => ({
   consultants: [],
+  paginatedConsultants: [],
 });
 
 export const getters = {
+  getAllPaginatedConsultants: (state) => state.paginatedConsultants,
   getAllConsultants: (state) => state.consultants,
 };
 
@@ -22,12 +24,32 @@ export const mutations = {
     state.consultants = consultants;
   },
 
+  SET_ALL_PAGINATED_CONSULTANTS(state, paginatedConsultants) {
+    state.paginatedConsultants = paginatedConsultants;
+  },
+
   //   SET_SELECTED_DEPARTMENT(state, department) {
   //     state.getSelectedDepartment = department;
   //   },
 };
 
 export const actions = {
+  saveTimeSlot({ commit }, payload) {
+    let authToken = localStorage.getItem("authToken");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await this.$axios.$post("/schedule", payload.schedule, {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        });
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   saveConsultant({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
@@ -90,7 +112,7 @@ export const actions = {
           },
         }
       );
-      commit("SET_ALL_CONSULTANTS", data);
+      commit("SET_ALL_PAGINATED_CONSULTANTS", data);
       resolve(data);
     });
   },
@@ -98,7 +120,7 @@ export const actions = {
   loadAllConsultants({ commit }) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
-      const data = await this.$axios.$get(`/consultant/all`, {
+      const { data } = await this.$axios.$get(`/consultant/all`, {
         headers: {
           Authorization: "Bearer " + authToken,
         },
@@ -119,7 +141,20 @@ export const actions = {
           },
         }
       );
-      commit("SET_ALL_CONSULTANTS", data);
+      commit("SET_ALL_PAGINATED_CONSULTANTS", data);
+      resolve(data);
+    });
+  },
+
+  loadSchedulesByConsultant({ commit }, consultantId) {
+    let authToken = localStorage.getItem("authToken");
+
+    return new Promise(async (resolve, reject) => {
+      const { data } = await this.$axios.$get(`/schedule/${consultantId}`, {
+        headers: {
+          Authorization: "Bearer " + authToken,
+        },
+      });
       resolve(data);
     });
   },

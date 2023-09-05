@@ -276,17 +276,22 @@ export default {
 
       if (!this.editMode) {
         this.consultant.user.email = this.consultant.email;
-        this.consultant.user.userName = this.consultant.firstName;
+        this.consultant.user.userName = this.consultant.firstName.toLocaleLowerCase();
         this.consultant.user.fullName =
           this.consultant.firstName + " " + this.consultant.lastName;
-        this.consultant.user.password = "password";
+        this.consultant.user.password = "00000";
       }
 
-      this.$store.dispatch(storeAction, { consultant: this.consultant }).then((res) => {
-        if (this.editMode) this.$router.push({ path: "/dashboard/manage-consultants" });
-        this.clearForm();
-        swal("Success!", res.message, "success");
-      });
+      this.$store
+        .dispatch(storeAction, { consultant: this.consultant })
+        .then((res) => {
+          if (this.editMode) this.$router.push({ path: "/dashboard/manage-consultants" });
+          this.clearForm();
+          swal("Success!", res.message, "success");
+        })
+        .catch((error) => {
+          swal("Error!", error.response.data.message, "error");
+        });
     },
 
     clearForm() {

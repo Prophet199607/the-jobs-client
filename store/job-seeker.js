@@ -33,6 +33,17 @@ export const actions = {
     });
   },
 
+  register({ commit }, payload) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await this.$axios.$post("/register", payload.job_seeker);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   updateJobSeeker({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {

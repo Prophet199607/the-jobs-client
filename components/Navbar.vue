@@ -3,22 +3,19 @@
     <!-- header start -->
     <header class="py-1 md:py-4 shadow-sm bg-white px-2 md:px-24">
       <div class="flex md:hidden justify-between items-center cursor-pointer mr-3">
-        <img :src="getImage(company.company_image)" alt="logo" class="w-12 md:w-24" />
+        <img :src="getImage('')" alt="logo" class="w-12 md:w-24" />
 
         <!-- mobile searchbar start -->
         <div class="relative w-full mx-4 block md:hidden">
           <input
             type="search"
             id="search-dropdown"
-            v-model="search"
-            @keyup="searching"
             class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg rounded-l-lg md:rounded-l-none md:border-l-gray-50 md:border-l-2 border border-gray-300 focus:ring-primary focus:border-primary"
             placeholder="Search product..."
             required=""
           />
           <button
             type="button"
-            @click="searching"
             class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-primary rounded-r-lg border border-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary"
           >
             <svg
@@ -36,26 +33,6 @@
               ></path>
             </svg>
           </button>
-          <div
-            class="block z-10 p-3 bg-gray-100 shadow-md absolute top-12 rounded"
-            style="width: 90%"
-            v-if="results.length > 0"
-          >
-            <div
-              class="flex items-center gap-x-3 my-1 cursor-pointer"
-              v-for="product in results"
-              :key="product.id"
-              @click="showSingleProduct(product)"
-            >
-              <nuxt-img
-                class="w-14 h-14"
-                alt=""
-                :src="getProductImage(product.thumbnail_path)"
-                style=""
-              />
-              <div class="text-sm font-normal py-2">{{ product.product_name }}</div>
-            </div>
-          </div>
         </div>
         <!-- mobile searchbar end -->
 
@@ -70,7 +47,7 @@
         <!-- logo -->
 
         <a href="#" class="hidden md:flex">
-          <img :src="getImage(company.company_image)" alt="logo" class="w-12 md:w-24" />
+          <img :src="getImage('')" alt="logo" class="w-12 md:w-24" />
         </a>
 
         <!-- searchbar start -->
@@ -114,32 +91,19 @@
               z-index: 1000;
             "
           >
-            <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdown-button">
-              <li v-for="(department, index) in departments" :key="index">
-                <button
-                  type="button"
-                  class="inline-flex py-2 px-4 w-full hover:bg-gray-100"
-                  @click="setSelectedDepratment(department)"
-                >
-                  {{ department.department_display_name }}
-                </button>
-              </li>
-            </ul>
+            <ul class="py-1 text-sm text-gray-700" aria-labelledby="dropdown-button"></ul>
           </div>
           <div class="relative w-full">
             <input
               ref="search_input"
               type="search"
               id="search-dropdown"
-              v-model="search"
-              @keyup="searching"
               class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg rounded-l-lg md:rounded-l-none md:border-l-gray-50 border-l-2 border border-gray-300 focus:ring-primary focus:border-primary"
               placeholder="Search product..."
               required=""
             />
             <button
               type="button"
-              @click="searching"
               class="absolute top-0 right-0 p-3 text-base font-medium text-white bg-primary rounded-r-lg border border-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary"
             >
               <svg
@@ -157,26 +121,6 @@
                 ></path>
               </svg>
             </button>
-            <div
-              class="block z-10 p-3 bg-gray-100 shadow-md absolute top-12 rounded"
-              style="width: 90%"
-              v-if="results.length > 0"
-            >
-              <div
-                class="flex items-center gap-x-3 my-2 cursor-pointer"
-                v-for="product in results"
-                :key="product.id"
-                @click="showSingleProduct(product)"
-              >
-                <nuxt-img
-                  class="w-20 h-20"
-                  alt=""
-                  :src="getProductImage(product.thumbnail_path)"
-                  style=""
-                />
-                <div class="text-base font-medium py-2">{{ product.product_name }}</div>
-              </div>
-            </div>
           </div>
         </div>
         <!-- searchbar end -->
@@ -195,14 +139,6 @@
                 class="flex items-center justify-start px-3 py-3 mr-3 rounded text-center text-gray-700 hover:bg-primary hover:text-white transition relative"
               >
                 <div class="text-sm leading-3">Home</div>
-              </div>
-            </li>
-            <li class="my-0 cursor-pointer">
-              <div
-                @click="navigateToPage('/shop', true)"
-                class="flex items-center justify-start px-3 py-3 mr-3 rounded text-center text-gray-700 hover:bg-primary hover:text-white transition relative"
-              >
-                <div class="text-sm leading-3">Shop</div>
               </div>
             </li>
             <li class="my-0 cursor-pointer">
@@ -276,6 +212,15 @@
           </div>
           <div class="flex gap-1 text-base" v-else>
             <p
+              v-if="checkUserHasAccess(['ROLE_USER'])"
+              class="text-gray-200 hover:text-white transition cursor-pointer"
+              @click="navigateToAccount"
+            >
+              <i class="fa fa-user-circle" aria-hidden="true"></i>
+              My Account
+            </p>
+            <p
+              v-else
               class="text-gray-200 hover:text-white transition cursor-pointer"
               @click="navigateToAccount"
             >
@@ -316,72 +261,25 @@ export default {
     loggedInUserRoles() {
       return this.$store.getters["auth-api/getLoggedInUserRoles"];
     },
-    cart() {
-      return this.$store.getters["cart/getCartData"];
-    },
-    wishList() {
-      return this.$store.getters["wish-list/getWishListData"];
-    },
-    company() {
-      return this.$store.getters["company/getCompanyData"];
-    },
-    departments() {
-      return this.$store.getters["departments/getActiveDepartments"];
-    },
   },
 
   mounted() {
-    this.loadCartData();
-    this.loadWishListData();
-    this.loadCompanyData();
-    this.loadActiveDepartments();
-    if (!this.departments || this.departments.length == 0) {
-    }
+    // this.loadCompanyData();
   },
 
   methods: {
-    loadCartData() {
-      this.$store.dispatch("cart/loadCartData");
-    },
-
-    loadWishListData() {
-      this.$store.dispatch("wish-list/loadWishListData");
+    checkUserHasAccess(required_roles) {
+      let hasRole = false;
+      required_roles.forEach((role) => {
+        if (this.loggedInUserRoles.includes(role)) {
+          hasRole = true;
+        }
+      });
+      return hasRole;
     },
 
     loadCompanyData() {
       this.$store.dispatch("company/loadCompanyData");
-    },
-
-    loadActiveDepartments() {
-      this.$store.dispatch("departments/loadActiveDepartments");
-    },
-
-    getProductImage(image_path) {
-      return `${process.env.API_IMAGE_BASE_URL}${image_path}`;
-    },
-
-    searching: _.debounce(function () {
-      if (this.search == "") {
-        this.results = [];
-        return;
-      }
-      this.$store
-        .dispatch("products/searchProduct", {
-          department: this.selected_department,
-          search_term: this.search,
-        })
-        .then((res) => {
-          this.results = res;
-        });
-    }, 1000),
-
-    showSingleProduct(product) {
-      this.results = [];
-      this.$router.push({ path: `/shop/product/${product.product_code}` });
-    },
-
-    async removeItemFromCart(product) {
-      await this.$store.dispatch("cart/removeItemFromCart", product.id);
     },
 
     openMenu() {
@@ -394,20 +292,6 @@ export default {
       this.isMenuOpen = false;
       const menu = document.querySelector("#menu");
       menu.classList.add("hidden");
-    },
-
-    navigateToShopPage(department_id) {
-      this.$store.dispatch("departments/setSelectedDepartment", department_id);
-      this.$router.push({ path: "/shop", query: { d_: department_id, c_: "" } });
-    },
-
-    setSelectedDepratment(department) {
-      document.getElementById("dropdown").blur();
-      this.$refs.search_input.focus();
-      this.selected_department = {
-        id: department.id,
-        department_name: department.department_display_name,
-      };
     },
 
     closeDropdownList() {},
@@ -430,7 +314,7 @@ export default {
       if (this.isUserLoggedIn && !this.loggedInUserRoles.includes("ROLE_USER")) {
         this.$router.push({ path: "/dashboard" });
       } else {
-        this.$router.push({ path: "/customer" });
+        this.$router.push({ path: "/dashboard" });
       }
     },
   },

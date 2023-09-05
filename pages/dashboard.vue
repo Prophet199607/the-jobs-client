@@ -1,5 +1,5 @@
 <template>
-  <div class="px-14 md:mx-10">
+  <div class="px-14 md:mx-10 mt-14">
     <!-- account wrapper start -->
 
     <!-- mobile menu button start -->
@@ -94,6 +94,13 @@
             >
               Manage Consultants</a
             >
+            <a
+              href="#"
+              @click.prevent="loadDashboardContent('/dashboard/available-slots')"
+              class="relative text-base hover:text-primary block capitalize transition"
+            >
+              View Available Slots</a
+            >
           </div>
           <!-- single link end -->
           <!-- single link start -->
@@ -130,9 +137,7 @@
           <!-- single link start -->
           <div
             class="space-y-1 pl-8 pt-4"
-            v-show="
-              checkUserHasAccess(['ROLE_ADMIN', 'ROLE_CONSULTANT', 'ROLE_RECEPTIONIST'])
-            "
+            v-show="checkUserHasAccess(['ROLE_CONSULTANT'])"
           >
             <div
               @click.prevent="loadDashboardContent('/dashboard/manage-slots')"
@@ -142,6 +147,19 @@
                 <i class="fa fa-users" aria-hidden="true"></i>
               </span>
               Manage Slots
+            </div>
+          </div>
+          <!-- single link end -->
+          <!-- single link start -->
+          <div class="space-y-1 pl-8 pt-4" v-show="checkUserHasAccess(['ROLE_USER'])">
+            <div
+              @click.prevent="loadDashboardContent('/dashboard/manage-slots')"
+              class="relative text-gray-600 block font-medium capitalize transition cursor-pointer"
+            >
+              <span class="absolute -left-8 top-0 text-sm">
+                <i class="fa fa-users" aria-hidden="true"></i>
+              </span>
+              My Appointments
             </div>
           </div>
           <!-- single link end -->
@@ -239,7 +257,7 @@ export default {
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      if (!vm.isUserLoggedIn || vm.loggedInUserRoles.includes("ROLE_USER")) {
+      if (!vm.isUserLoggedIn) {
         vm.$router.push({ path: "/" });
       } else {
         return true;

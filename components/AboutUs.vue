@@ -190,7 +190,7 @@ export default {
   },
 
   mounted() {
-    this.loadCompanyAboutUs();
+    // this.loadCompanyAboutUs();
   },
 
   methods: {
