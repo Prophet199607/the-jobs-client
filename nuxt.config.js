@@ -5,7 +5,7 @@ export default {
     port: 7000, // default: 3000
   },
   head: {
-    title: "Chandra Food City",
+    title: "The Jobs",
     htmlAttrs: {
       lang: "en",
     },
@@ -34,15 +34,15 @@ export default {
         content:
           "Chandra Food City is a unique supermarket with a wide array of consumer products at affordable prices along with special discounts catering to the people in Pelmadulla and other areas in the vicinity. We are committed to offering a friendly and faster service always. Chandra Food City is located at Godakawela Main Street and also has a pharmacy. The supermarket is owned by Nalaka Aluthge.",
       },
-      {
-        property: "og:image",
-        content:
-          "https://api.chandrafoodcity.lk/storage/images/company/logo-1661243473.webp",
-      },
+      // {
+      //   property: "og:image",
+      //   content:
+      //     "https://api.chandrafoodcity.lk/storage/images/company/logo-1661243473.webp",
+      // },
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/chandra-favicon.ico" },
+      // { rel: "icon", type: "image/x-icon", href: "/chandra-favicon.ico" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://cdnjs.cloudflare.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com" },
