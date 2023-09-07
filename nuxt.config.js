@@ -55,6 +55,13 @@ export default {
         href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css",
       },
     ],
+    script: [
+      {
+        src: "https://cdn.jsdelivr.net/npm/typed.js@2.0.12",
+        async: true,
+        defer: true,
+      },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

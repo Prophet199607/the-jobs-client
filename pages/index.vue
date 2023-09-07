@@ -1,7 +1,178 @@
 <template>
   <div>
+    <section
+      class="bg-cover bg-top relative py-52 text-white"
+      style="
+        background-image: url(https://img.freepik.com/free-photo/business-meeting-office_23-2147626525.jpg);
+      "
+    >
+      <div class="absolute inset-0 bg-black opacity-50"></div>
+      <!-- Overlay -->
+      <div class="container mx-auto text-center relative z-10">
+        <h1 class="text-4xl font-bold mb-4">Your Path to a Better Career</h1>
+        <p class="text-lg mb-8">We help you find the perfect job.</p>
+        <a
+          href="#"
+          class="bg-white text-blue-500 hover:bg-blue-600 py-2 px-6 rounded-full text-lg font-semibold transition duration-300 ease-in-out"
+          >Get Started</a
+        >
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <!-- Features Section -->
+    <section class="py-16">
+      <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-20">Our Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="bg-white shadow-lg rounded-lg p-6 relative">
+            <div
+              class="rounded-full bg-blue-500 text-white w-16 h-16 flex items-center justify-center absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
+              <i class="fas fa-search text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mt-8">Job Search</h3>
+            <p class="text-gray-600">
+              We provide you with access to a wide range of job opportunities.
+            </p>
+          </div>
+          <!-- Feature 2 -->
+          <div class="bg-white shadow-lg rounded-lg p-6 relative">
+            <div
+              class="rounded-full bg-blue-500 text-white w-16 h-16 flex items-center justify-center absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
+              <i class="fas fa-file-alt text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mt-8">Resume Building</h3>
+            <p class="text-gray-600">
+              Craft an impressive resume to stand out to potential employers.
+            </p>
+          </div>
+          <!-- Feature 3 -->
+          <div class="bg-white shadow-lg rounded-lg p-6 relative">
+            <div
+              class="rounded-full bg-blue-500 text-white w-16 h-16 flex items-center justify-center absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
+              <i class="fas fa-users text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mt-8">Interview Preparation</h3>
+            <p class="text-gray-600">
+              Ace your interviews with our expert guidance and practice.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SVG and Customer Review Section -->
+    <section class="bg-gray-100 py-16">
+      <div class="container mx-auto flex flex-col items-center md:flex-row">
+        <!-- SVG Image (Left Side) -->
+        <div class="md:w-1/2">
+          <img
+            src="https://img.freepik.com/free-vector/man-having-online-job-interview_52683-43379.jpg"
+            alt="SVG Image"
+            class="w-full md:max-w-md mx-auto"
+          />
+        </div>
+        <!-- Customer Review (Right Side) -->
+        <div class="md:w-1/2 px-4">
+          <div class="bg-white p-8 rounded-lg shadow-lg">
+            <div class="flex items-center gap-x-3">
+              <img
+                src="https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
+                alt="Customer 2"
+                class="w-12 h-12 rounded-full"
+              />
+              <h2 class="text-2xl font-semibold">Good Service</h2>
+            </div>
+            <p class="text-gray-600 mb-4">
+              "Insert customer review here. Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit. Integer eget urna sed neque efficitur finibus. Nam in justo
+              a urna varius tristique. Sed efficitur justo sit amet eros viverra, at
+              sollicitudin nisi tincidunt."
+            </p>
+
+            <p class="text-gray-800 font-semibold">- John Doe, Satisfied Customer</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container mx-auto p-8">
+      <h1 class="text-3xl font-semibold text-center mb-8">Image Gallery</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Gallery Item 1 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://images.unsplash.com/photo-1653669486779-671f54d26c13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            alt="Image 1"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <!-- Gallery Item 2 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://images.unsplash.com/photo-1653669485641-8582ad808121?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
+            alt="Image 2"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <!-- Gallery Item 3 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://images.unsplash.com/photo-1653669487066-550c97ebea48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            alt="Image 3"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <!-- Gallery Item 4 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://images.unsplash.com/photo-1653669486775-75ddc200933c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            alt="Image 4"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <!-- Gallery Item 5 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://img.freepik.com/free-photo/legal-expert-explaining-document-specifics-customer_74855-2034.jpg"
+            alt="Image 5"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <!-- Gallery Item 6 -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://img.freepik.com/free-photo/two-sitting-business-people-looking-documents_23-2147626354.jpg"
+            alt="Image 6"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-gray-200 py-16">
+      <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-8">Contact Us</h2>
+        <p class="text-gray-600 mb-8">
+          Have questions or need assistance? Feel free to contact us.
+        </p>
+        <a
+          href="#"
+          class="bg-blue-500 text-white hover:bg-blue-600 py-2 px-6 rounded-full text-lg font-semibold transition duration-300 ease-in-out"
+          >Contact Us</a
+        >
+      </div>
+    </section>
+    <footer class="bg-gray-800 text-white py-8">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2023 Job Consultation Company. All rights reserved.</p>
+      </div>
+    </footer>
     <!-- banner start -->
-    <no-ssr>
+    <!-- <no-ssr>
       <div
         class="hidden md:block -z-10"
         style="z-index: -500"
@@ -21,7 +192,7 @@
             <div>
               <nuxt-img
                 quality="100"
-                :src="getImageUrl(image.image_path)"
+                :src="image.image_path"
                 class="w-100 h-100 transition"
                 alt="carousel image"
                 for="product_image"
@@ -58,38 +229,8 @@
           </div>
         </carousel>
       </div>
-    </no-ssr>
+    </no-ssr> -->
     <!-- banner end -->
-
-    <!-- departments shortcut card start -->
-    <div style="margin: 0 auto">
-      <div class="grid grid-cols-3 md:grid-cols-8 gap-2 my-5 mx-5 md:mx-24 mt-10">
-        <div
-          class="shadow-md relative p-1 flex flex-col gap-y-2 items-center rounded-md cursor-pointer hover:scale-105 transition"
-          v-for="(department, index) in departments.slice(0, 8)"
-          :key="department.id"
-          @click="navigateToShopPage(department.id)"
-        >
-          <nuxt-img
-            :src="generateImagePath(department.department_image)"
-            class="w-20 h-20"
-            loading="lazy"
-            sizes="sm:200px md:200px lg:400px"
-            alt=""
-          />
-          <div class="text-sm text-center">
-            {{ department.department_display_name }}
-          </div>
-          <div
-            v-if="index == 7"
-            class="absolute text-sm top-0 bottom-0 left-0 right-0 bg-gray-400 opacity-90 text-white flex items-center justify-center rounded-md cursor-pointer hover:scale-105 transition"
-          >
-            Load more..
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- departments shortcut card end -->
 
     <!-- featured products start -->
     <div
@@ -180,214 +321,6 @@
     </div>
     <!-- mobile banner end -->
     <!-- banner 1 start -->
-
-    <!-- new arrival products start -->
-    <div class="relative flex items-top justify-center sm:items-center sm:pt-0">
-      <div class="container pb-16 px-5 mx-auto">
-        <div
-          class="text-xl z-10 section-title font-medium text-gray-800 text-center my-10 px-5"
-        >
-          <span class="z-50 px-5">New Arrivals</span>
-        </div>
-        <!-- product grid start -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-6">
-          <!-- single product start -->
-          <div
-            v-for="product in newArrivals"
-            :key="product.id"
-            class="bg-white shadow-xl rounded overflow-hidden relative h-76 md:h-auto"
-          >
-            <!-- product image start -->
-            <div
-              class="relative group cursor-pointer"
-              @click="showSingleProduct(product)"
-            >
-              <div
-                v-if="product.is_best_selling"
-                class="bg-green-500 rounded-sm absolute top-0 left-0 px-3 py-1 w-24 z-100 text-white text-xs"
-              >
-                <span class="">Best Selling</span>
-              </div>
-              <div class="flex justify-center">
-                <nuxt-img
-                  :src="generateImagePath(product.thumbnail_path)"
-                  quality="10"
-                  sizes="xs:350px sm:100vw md:50vw xl:80vw"
-                  class="w-40 md:w-full transition duration-500"
-                />
-              </div>
-            </div>
-            <!-- product image end -->
-
-            <!-- product content start -->
-            <div class="pt-0 pb-3 px-4 bg-white">
-              <h4
-                class="block md:hidden uppercase font-medium mb-2 text-gray-800 hover:text-primary transition cursor-pointer"
-                @click="showSingleProduct(product)"
-                :class="resizeProductTitleMobile(product.product_name)"
-              >
-                {{ product.product_name | limitText(36) }}
-              </h4>
-              <h4
-                class="hidden md:block h-10 uppercase font-medium mb-2 text-gray-800 hover:text-primary transition cursor-pointer"
-                @click="showSingleProduct(product)"
-                :class="resizeProductTitle(product.product_name)"
-              >
-                {{ product.product_name }}
-              </h4>
-              <div class="flex flex-col md:flex-row items-baseline mb-1 md:space-x-2">
-                <p class="text-base text-primary font-medium">
-                  {{ product.price | currency }}
-                </p>
-                <p
-                  class="text-xs text-gray-400 line-through -mt-1 md:mt-0"
-                  v-if="product.marked_price != 0"
-                >
-                  {{ product.marked_price | currency }}
-                </p>
-              </div>
-              <div
-                class="w-auto md:w-full left-2 md:left-0 right-2 md:right-0 absolute md:relative bottom-3 md:bottom-0"
-              >
-                <div class="flex items-center">
-                  <client-only>
-                    <star-rating
-                      :rating="product.rating"
-                      :show-rating="false"
-                      :padding="5"
-                      :read-only="true"
-                      :star-size="16"
-                      active-color="#ffb303"
-                      :rounded-corners="true"
-                    ></star-rating>
-                  </client-only>
-                  <div class="text-xs text-gray-500 ml-3">
-                    ({{ product.rating_count }})
-                  </div>
-                </div>
-                <button
-                  v-if="!product.has_filters"
-                  class="rounded w-full transition font-roboto font-medium px-6 py-1 text-center text-sm text-white border"
-                  :class="[
-                    product.out_of_stock == 0 && getAvailablity()
-                      ? ' bg-primary border border-primary rounded hover:bg-transparent hover:text-primary '
-                      : 'cursor-not-allowed  bg-red-400   border-red-400',
-                  ]"
-                  @click="addToCart(product)"
-                >
-                  Add to cart
-                </button>
-                <button
-                  v-else
-                  class="rounded w-full transition font-roboto font-medium px-6 py-1 text-center text-sm text-white border"
-                  :class="[
-                    product.out_of_stock == 0
-                      ? ' bg-primary border border-primary rounded hover:bg-transparent hover:text-primary '
-                      : 'cursor-not-allowed  bg-red-400   border-red-400',
-                  ]"
-                  @click="showSingleProduct(product)"
-                >
-                  View Product
-                </button>
-              </div>
-            </div>
-            <!-- <div class="pt-4 pb-3 px-4 bg-white">
-              <h4
-                class="uppercase font-medium mb-2 max-h-8 md:max-h-8 h-10 text-gray-800 hover:text-primary transition cursor-pointer"
-                :class="resizeProductTitle(product.product_name)"
-                @click="showSingleProduct(product)"
-              >
-                {{ product.product_name }}
-              </h4>
-
-              <div class="flex flex-col flex-wrap items-baseline mb-1">
-                <p class="text-base md:text-lg text-primary font-medium">
-                  {{ product.price | currency }}
-                </p>
-                <span
-                  class="text-xs md:text-sm font-medium text-red-500 line-through"
-                  v-if="product.marked_price != 0"
-                >
-                  {{ product.marked_price | currencyWithoutRs }}
-                </span>
-              </div>
-              <div
-                class="w-auto md:w-full left-2 md:left-0 right-2 md:right-0 absolute md:relative bottom-5 md:bottom-0"
-              >
-                <div class="flex items-center mb-2">
-                  <client-only>
-                    <star-rating
-                      :rating="product.rating"
-                      :show-rating="false"
-                      :padding="5"
-                      :read-only="true"
-                      :star-size="15"
-                      active-color="#ffb303"
-                      :rounded-corners="true"
-                    ></star-rating>
-                  </client-only>
-                  <div class="text-xs text-gray-500 ml-3">
-                    ({{ product.rating_count }})
-                  </div>
-                </div>
-                <button
-                  v-if="!product.has_filters"
-                  class="block w-full text-sm md:text-base mt-1 py-1 text-center text-white border rounded-b transition"
-                  :class="[
-                    product.out_of_stock == 0 && getAvailablity()
-                      ? ' bg-primary border border-primary rounded hover:bg-transparent hover:text-primary '
-                      : 'cursor-not-allowed  bg-red-400   border-red-400 ',
-                  ]"
-                  @click="addToCart(product)"
-                >
-                  Add to cart
-                </button>
-                <button
-                  v-else
-                  class="rounded w-full transition font-roboto font-medium px-6 py-2 text-center text-sm text-white border"
-                  :class="[
-                    product.out_of_stock == 0
-                      ? ' bg-primary border border-primary rounded hover:bg-transparent hover:text-primary '
-                      : 'cursor-not-allowed  bg-red-400   border-red-400',
-                  ]"
-                  @click="showSingleProduct(product)"
-                >
-                  View Product
-                </button>
-              </div>
-            </div> -->
-            <!-- product content end -->
-          </div>
-          <!-- single product end -->
-        </div>
-        <!-- product grid end -->
-      </div>
-    </div>
-    <!-- new arrival products end -->
-
-    <!-- banner 2 start -->
-    <!-- desktop banner start -->
-    <div class="hidden md:flex justify-center" v-if="banners.banner_image_2">
-      <nuxt-img
-        loading="lazy"
-        quality="100"
-        :src="getImageUrl(banners.banner_image_2)"
-        sizes="sm:100vw md:50vw lg:1500px"
-      />
-    </div>
-    <!-- desktop banner end -->
-    <!-- mobile banner start -->
-    <div class="flex md:hidden justify-center mt-2" v-if="mobile_banners.banner_image_2">
-      <nuxt-img
-        loading="lazy"
-        quality="100"
-        class="text-center"
-        :src="getImageUrl(mobile_banners.banner_image_2)"
-        alt=""
-      />
-    </div>
-    <!-- mobile banner end -->
-    <!-- banner 2 end -->
   </div>
 </template>
 
@@ -400,7 +333,12 @@ export default {
     return {
       featuredProducts: [],
       newArrivals: [],
-      sliderImages: [],
+      sliderImages: [
+        {
+          image_path:
+            "https://img.freepik.com/free-photo/business-meeting-office_23-2147626525.jpg",
+        },
+      ],
       mobileSliderImages: [],
       banners: {},
       mobile_banners: {},
