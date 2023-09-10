@@ -137,24 +137,6 @@
               </ValidationProvider>
             </div>
           </div>
-          <div class="flex items-start mb-4 mt-2">
-            <input
-              id="agreement"
-              type="checkbox"
-              v-model="agreement"
-              class="text-primary focus:ring-0 rounded-sm cursor-pointer w-3 h-3 mt-1.5"
-            />
-            <label for="agreement" class="text-gray-600 ml-3 cursor-pointer text-sm"
-              >I have read and agree to the
-              <a href="/privacy-policy" target="_blank" class="text-primary"
-                >privacy policy</a
-              >
-              and
-              <a href="/terms-and-conditions" target="_blank" class="text-primary"
-                >terms & conditions</a
-              ></label
-            >
-          </div>
           <div class="mt-4">
             <button
               type="submit"
@@ -165,26 +147,6 @@
           </div>
         </form>
       </ValidationObserver>
-      <!-- login with start -->
-      <!-- <div class="mt-6 flex justify-center relative">
-        <div class="text-gray-600 uppercase px-3 bg-white z-10 relative">
-          or sign up with
-        </div>
-        <div class="absolute left-0 top-3 w-full border-b-2 border-gray-200"></div>
-      </div>
-      <div class="flex mt-4 gap-4">
-        <a
-          href="#"
-          class="w-1/2 py-2 text-center text-white bg-blue-800 rounded uppercase font-inter font-medium text-sm hover:bg-blue-700"
-          >Facebook</a
-        >
-        <a
-          href="#"
-          class="w-1/2 py-2 text-center text-white bg-yellow-600 rounded uppercase font-inter font-medium text-sm hover:bg-yellow-500"
-          >Google</a
-        >
-      </div> -->
-      <!-- login with end -->
       <p class="mt-4 text-gray-600 text-center">
         Already have an account?
         <NuxtLink to="/login" class="text-primary">Login now</NuxtLink>
@@ -220,27 +182,24 @@ export default {
           passwordConfirmation: "",
         },
       },
-      agreement: false,
     };
   },
 
   methods: {
     registerJobSeeker() {
-      if (this.agreement) {
-        this.job_seeker.user.email = this.job_seeker.email;
-        this.job_seeker.user.fullName =
-          this.job_seeker.firstName + " " + this.job_seeker.lastName;
+      this.job_seeker.user.email = this.job_seeker.email;
+      this.job_seeker.user.fullName =
+        this.job_seeker.firstName + " " + this.job_seeker.lastName;
 
-        this.$store
-          .dispatch("job-seeker/register", { job_seeker: this.job_seeker })
-          .then((res) => {
-            this.clearForm();
-            swal("Success!", "You have successfully registered", "success");
-            this.$router.push({
-              path: "/login",
-            });
+      this.$store
+        .dispatch("job-seeker/register", { job_seeker: this.job_seeker })
+        .then((res) => {
+          this.clearForm();
+          swal("Success!", "You have successfully registered", "success");
+          this.$router.push({
+            path: "/login",
           });
-      }
+        });
     },
 
     clearForm() {

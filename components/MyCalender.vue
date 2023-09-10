@@ -88,9 +88,6 @@ export default {
       }
       console.log("start", moment(start).format("YYYY-MM-DD HH:mm"));
       console.log("end", moment(end).format("YYYY-MM-DD HH:mm"));
-
-      // $("#AddHolidayToCalenderModal").modal();
-      // this.$refs.AddHolidayToCalenderModal.setTimeRange(arg);
     },
 
     handleSelect(arg) {
@@ -125,6 +122,10 @@ export default {
     handleEventClick(arg) {
       const selectedSlotId = arg.event._def.publicId;
 
+      let index = this.calendarOptions.events.findIndex(
+        (event) => event.id == selectedSlotId
+      );
+
       let selectedSlot = this.allSlotData.find(
         (slot) => slot.scheduleId == selectedSlotId
       );
@@ -136,22 +137,24 @@ export default {
 
       swal({
         title: "Are you sure?",
-        text: "Do you want to delete this slot!",
+        text: "Do you want to delete this slot?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          // this.$store
-          //   .dispatch("order/cancelOrder", order_code)
-          //   .then((res) => {
-          //     swal("Success!", "Order Cancelled successfully", "success");
-          //     this.order = res;
-          //   })
-          //   .catch((err) => {});
+          this.$store
+            .dispatch("consultant/deleteTimeSlot", selectedSlotId)
+            .then((res) => {
+              this.calendarOptions.events.splice(index, 1);
+              swal("Success!", "Schedule deleted successfully", "success");
+              this.order = res;
+            })
+            .catch((err) => {});
         }
       });
     },
+
     internalDragStart(arg) {
       console.log("sdsd");
       // $("#AddHolidayToCalenderModal").modal();
@@ -180,7 +183,12 @@ export default {
         },
       };
       this.$store.dispatch("consultant/saveTimeSlot", { schedule }).then((res) => {
-        swal("Success!", res.message, "success");
+        this.$toast.open({
+          message: res.message,
+          type: "success",
+          position: "top-right",
+        });
+        this.loadSchedulesByConsultant();
       });
     },
   },

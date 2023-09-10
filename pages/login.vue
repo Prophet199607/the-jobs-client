@@ -137,6 +137,19 @@ export default {
     verification_email_sent_status() {
       return this.$store.getters["settings/getVerifiedEmailSendStatus"];
     },
+    isUserLoggedIn() {
+      return this.$store.getters["auth-api/getAuthenticatedState"];
+    },
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (vm.isUserLoggedIn) {
+        vm.$router.push({ path: "/" });
+      } else {
+        return true;
+      }
+    });
   },
 
   methods: {

@@ -1,22 +1,5 @@
 <template>
   <div>
-    <div class="my-5">
-      <label for="" class="text-gray-600 mb-2 block text-sm">Consultant</label>
-      <select
-        class="block w-96 text-base border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-        v-model="selectedConsultantId"
-        @change="loadSchedulesByConsultant"
-      >
-        <option value="0">-- select --</option>
-        <option
-          v-for="(consultant, index) in consultants"
-          :key="index"
-          :value="consultant.consultantId"
-        >
-          {{ consultant.firstName }} {{ consultant.lastName }}
-        </option>
-      </select>
-    </div>
     <FullCalendar :options="calendarOptions" />
   </div>
 </template>
@@ -49,6 +32,8 @@ export default {
         ],
         selectOverlap: false,
 
+        eventClick: this.handleEventClick,
+
         initialView: "dayGridMonth",
         editable: true,
         selectable: true,
@@ -70,29 +55,50 @@ export default {
   },
 
   created() {
-    this.loadAllConsultants();
+    this.loadMyAppointments();
   },
 
   methods: {
-    loadAllConsultants() {
-      this.$store.dispatch("consultant/loadAllConsultants").then((res) => {});
+    loadMyAppointments() {
+      this.$store.dispatch("appointment/loadMyAppointments").then((res) => {
+        this.allSlotData = res;
+        this.calendarOptions.events = res.map((el) => {
+          return {
+            id: el.appointmentId,
+            title: `Appointment-${el.appointmentId}`,
+            start: el.schedule.start,
+            end: el.schedule.end,
+            color: el.isAccepted ? "#04df29" : "#4245f5",
+          };
+        });
+      });
     },
 
-    loadSchedulesByConsultant() {
-      this.$store
-        .dispatch("consultant/loadSchedulesByConsultant", this.selectedConsultantId)
-        .then((res) => {
-          this.allSlotData = res;
-          this.calendarOptions.events = res.map((el) => {
-            return {
-              id: el.scheduleId,
-              title: el.title,
-              start: el.start,
-              end: el.end,
-              color: el.isBooked ? "#04df29" : "#333",
-            };
-          });
-        });
+    handleEventClick(arg) {
+      const selectedSlotId = arg.event._def.publicId;
+
+      let index = this.calendarOptions.events.findIndex(
+        (event) => event.id == selectedSlotId
+      );
+
+      swal({
+        title: "Are you sure?",
+        text: "Do you want to cancel this appointment?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.$store
+            .dispatch("appointment/canceledAppointment", selectedSlotId)
+            .then((res) => {
+              this.calendarOptions.events.splice(index, 1);
+              swal("Success!", "Appointment canceled successfully", "success");
+              this.order = res;
+            })
+            .catch((err) => {});
+        }
+      });
     },
   },
 };

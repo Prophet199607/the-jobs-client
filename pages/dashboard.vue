@@ -54,11 +54,24 @@
         <!-- account profile end -->
 
         <!-- profile links start -->
+        <!-- single link start -->
+        <div
+          class="space-y-1 my-2"
+          v-if="checkUserHasAccess(['ROLE_CONSULTANT', 'ROLE_RECEPTIONIST'])"
+        >
+          <div
+            @click.prevent="loadDashboardContent('/dashboard/new-appointment')"
+            class="bg-yellow-500 text-white px-4 py-2 rounded-lg cursor-pointer"
+          >
+            <i class="fa-solid fa-plus mr-2"></i>Make an Appointment
+          </div>
+        </div>
+        <!-- single link end -->
         <div
           class="mt-6 bg-white shadow rounded p-4 divide-y divide-gray-200 space-y-4 text-gray-600"
         >
           <!-- single link start -->
-          <div class="space-y-1 pl-8">
+          <div class="space-y-1 pl-8" v-if="checkUserHasAccess(['ROLE_USER'])">
             <div
               @click.prevent="loadDashboardContent('/dashboard')"
               class="relative block text-base font-poppins font-medium capitalize transition cursor-pointer"
@@ -67,6 +80,24 @@
                 <i class="fa-solid fa-gauge"></i>
               </span>
               My Profile
+            </div>
+          </div>
+          <!-- single link end -->
+          <!-- single link start -->
+          <div
+            class="space-y-1 pl-8"
+            v-if="
+              checkUserHasAccess(['ROLE_ADMIN', 'ROLE_CONSULTANT', 'ROLE_RECEPTIONIST'])
+            "
+          >
+            <div
+              @click.prevent="loadDashboardContent('/dashboard')"
+              class="relative block text-base font-poppins font-medium capitalize transition cursor-pointer"
+            >
+              <span class="absolute -left-8 top-0 text-sm">
+                <i class="fa-solid fa-gauge"></i>
+              </span>
+              Dashboard
             </div>
           </div>
           <!-- single link end -->
@@ -144,16 +175,32 @@
               class="relative text-primary block font-medium capitalize transition cursor-pointer"
             >
               <span class="absolute -left-8 top-0 text-sm">
-                <i class="fa fa-users" aria-hidden="true"></i>
+                <i class="fa fa-calendar-check" aria-hidden="true"></i>
               </span>
               Manage Slots
             </div>
           </div>
           <!-- single link end -->
           <!-- single link start -->
+          <div
+            class="space-y-1 pl-8 pt-4"
+            v-show="checkUserHasAccess(['ROLE_CONSULTANT'])"
+          >
+            <div
+              @click.prevent="loadDashboardContent('/dashboard/consultant-appointments')"
+              class="relative text-primary block font-medium capitalize transition cursor-pointer"
+            >
+              <span class="absolute -left-8 top-0 text-sm">
+                <i class="fa fa-list-alt" aria-hidden="true"></i>
+              </span>
+              Appointments
+            </div>
+          </div>
+          <!-- single link end -->
+          <!-- single link start -->
           <div class="space-y-1 pl-8 pt-4" v-show="checkUserHasAccess(['ROLE_USER'])">
             <div
-              @click.prevent="loadDashboardContent('/dashboard/manage-slots')"
+              @click.prevent="loadDashboardContent('/dashboard/my-appointments')"
               class="relative text-gray-600 block font-medium capitalize transition cursor-pointer"
             >
               <span class="absolute -left-8 top-0 text-sm">
@@ -161,6 +208,26 @@
               </span>
               My Appointments
             </div>
+          </div>
+          <!-- single link end -->
+          <!-- single link start -->
+          <div class="space-y-1 pl-8 pt-4" v-show="checkUserHasAccess(['ROLE_ADMIN'])">
+            <a
+              href="#"
+              class="relative text-primary block font-medium capitalize transition"
+            >
+              <span class="absolute -left-8 top-0 text-sm">
+                <i class="fa-solid fa-file-waveform"></i>
+              </span>
+              Reports
+            </a>
+            <a
+              href="#"
+              @click.prevent="loadDashboardContent('/dashboard/appointment-report')"
+              class="relative text-base hover:text-primary block capitalize transition"
+            >
+              Appointment Reports</a
+            >
           </div>
           <!-- single link end -->
 

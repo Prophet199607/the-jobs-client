@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-2 md:px-24">
     <div class="grid grid-cols-12 gap-5 my-8">
-      <div class="col-span-12 md:col-span-8 shadow-xl p-6 md:p-8">
+      <div class="col-span-12 md:col-span-12 shadow-xl p-6 md:p-8">
         <h4 class="text-xl md:text-2xl font-medium uppercase">Leave us a message</h4>
         <p class="mb-8 mt-2 text-sm md:text-base text-gray-500">
           Use the form below to get in touch with the sales team
@@ -71,33 +71,6 @@
             >
               <i class="fa fa-paper-plane mr-1" aria-hidden="true"></i> send message
             </button>
-          </div>
-        </div>
-      </div>
-      <div class="col-span-12 md:col-span-4 shadow-xl p-6 md:p-8">
-        <div class="padding_default border-0 shadow_sm">
-          <h4 class="text-lg uppercase font-semibold my-3">our stores</h4>
-          <div class="flex flex-col gap-y-10">
-            <div
-              class="flex flex-col gap-y-3 text-gray-700 text-sm"
-              v-for="location in locations"
-              :key="location.id"
-            >
-              <h4 class="text-base capitalize font-medium mb-1">{{ location.title }}</h4>
-              <p class="flex gap-3">
-                <span class="icn"><i class="fa-solid fa-location-dot"></i></span>
-                {{ location.address_line_1 }} <br />
-                {{ location.address_line_2 }}
-              </p>
-              <p class="flex gap-3">
-                <span class="icn"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                {{ location.contact_no }}
-              </p>
-              <p class="flex gap-3">
-                <span class="icn"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                {{ location.email }}
-              </p>
-            </div>
           </div>
         </div>
       </div>

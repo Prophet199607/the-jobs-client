@@ -119,4 +119,17 @@ export const actions = {
       resolve(data);
     });
   },
+
+  deleteJobSeeker({ commit }, jobSeekerId) {
+    let authToken = localStorage.getItem("authToken");
+    return new Promise(async (resolve, reject) => {
+      const { data } = await this.$axios.$delete(`/job-seeker/${jobSeekerId}`, {
+        headers: {
+          Authorization: "Bearer " + authToken,
+        },
+      });
+      commit("SET_ALL_JOB_SEEKERS", data);
+      resolve(data);
+    });
+  },
 };

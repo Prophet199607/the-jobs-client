@@ -1,7 +1,7 @@
 <template>
   <div class="col-span-12 md:col-span-9 shadow rounded px-6 pt-5 pb-7 w-full">
     <h4 class="text-base font-medium capitalize mb-4">
-      {{ editMode ? "Update Job Seeker" : "Create Job Seeker" }}
+      {{ editMode ? "Update Job Seeker" : "Create New Job Seeker" }}
     </h4>
     <div class="space-y-4 text-sm md:text-sm">
       <ValidationObserver v-slot="{ handleSubmit }" ref="form">
@@ -193,14 +193,19 @@ export default {
         this.job_seeker.user.userName = this.job_seeker.firstName;
         this.job_seeker.user.fullName =
           this.job_seeker.firstName + " " + this.job_seeker.lastName;
-        this.job_seeker.user.password = "password";
+        this.job_seeker.user.password = null;
       }
 
-      this.$store.dispatch(storeAction, { job_seeker: this.job_seeker }).then((res) => {
-        if (this.editMode) this.$router.push({ path: "/dashboard/manage-job-seekers" });
-        this.clearForm();
-        swal("Success!", res.message, "success");
-      });
+      this.$store
+        .dispatch(storeAction, { job_seeker: this.job_seeker })
+        .then((res) => {
+          if (this.editMode) this.$router.push({ path: "/dashboard/manage-job-seekers" });
+          this.clearForm();
+          swal("Success!", res.message, "success");
+        })
+        .catch((err) => {
+          swal("Error!", "This email is already exists in the system!", "error");
+        });
     },
 
     clearForm() {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4>Manage my slots</h4>
+    <h4 class="my-3">Manage time slots</h4>
     <MyCalender></MyCalender>
   </div>
 </template>

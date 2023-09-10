@@ -1,34 +1,40 @@
 <template>
   <div class="w-full px-2 md:px-24">
-    <div class="grid grid-cols-12 gap-5 my-8">
-      <div class="col-span-12 md:col-span-12 p-6 md:p-8">
-        <div class="text-xl uppercase font-semibold relative">
-          <span>{{ about_us.title == "" ? "About Us" : about_us.title }}</span>
-          <span class="about-us-title border-primary"></span>
-        </div>
-        <div class="my-8 text-gray-700 text-sm md:text-base">
-          <div>
+    <section class="bg-white py-16">
+      <div class="container mx-auto flex flex-col items-center justify-center">
+        <h1 class="text-4xl font-semibold mb-6">About Us</h1>
+        <div class="md:flex md:space-x-6">
+          <div class="md:w-1/2">
             <img
-              :src="getImageUrl(about_us.about_us_image)"
-              class="hidden md:block transition relative float-right ml-5 mb-5"
-              style="max-width: 550px"
-              alt=""
-              for="product_image"
+              src="https://img.freepik.com/free-photo/legal-expert-explaining-document-specifics-customer_74855-2034.jpg"
+              alt="Company Office"
+              class="rounded-lg shadow-lg"
             />
-            <p class="my-2 indent-16">{{ about_us.paragraph_1 }}</p>
-            <img
-              :src="getImageUrl(about_us.about_us_image)"
-              class="block md:hidden transition relative p-5"
-              alt=""
-              for="product_image"
-            />
-            <p class="my-2 indent-10">{{ about_us.paragraph_2 }}</p>
-            <p class="my-2 indent-10">{{ about_us.paragraph_3 }}</p>
           </div>
-          <div class="col-span-12 md:col-span-6"></div>
+          <div class="md:w-1/2 mt-6 md:mt-0">
+            <p class="text-gray-700 leading-relaxed">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vestibulum,
+              urna vel tempor interdum, nisl erat sollicitudin ligula, nec facilisis odio
+              sapien eget nunc. Integer euismod viverra commodo. Fusce hendrerit tincidunt
+              metus, nec volutpat justo venenatis eu. Suspendisse potenti. Phasellus
+              consectetur luctus tortor in ultricies. Aenean id nunc sit amet libero
+              viverra ultrices vel sed purus. Vivamus bibendum enim id dui fermentum, ac
+              aliquam tortor varius. Nullam eget mi sit amet lectus dictum lacinia. Proin
+              varius lorem eget quam fermentum, non varius dolor dictum. Sed rhoncus
+              sapien non libero placerat tincidunt.
+            </p>
+            <p class="text-gray-700 leading-relaxed mt-4">
+              Aliquam erat volutpat. Vivamus in venenatis sapien, non laoreet nisl. Nullam
+              feugiat bibendum purus ac fringilla. Vivamus tincidunt nunc ut urna
+              vehicula, eu condimentum justo laoreet. Integer auctor justo sit amet dolor
+              ultrices, eget laoreet felis eleifend. Donec efficitur ullamcorper metus,
+              non lacinia ex tempus et. Etiam in turpis euismod, ullamcorper lectus eu,
+              bibendum turpis. Quisque a ipsum in ex commodo interdum.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 

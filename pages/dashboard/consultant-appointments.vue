@@ -12,16 +12,16 @@
 
       <p class="text-gray-500 font-medium">Manage Job Seekers</p>
     </div>
-    <div class="flex justify-end my-5 items-center">
-      <input
-        type="search"
-        id="search-dropdown"
-        v-model="search"
-        @keyup="searching"
-        class="block p-2.5 z-20 w-60 mt-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary"
-        placeholder="Search job seekers..."
-        required=""
-      />
+    <div class="flex justify-end my-2">
+      <select
+        class="w-44 text-base border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
+        v-model="selectedStatus"
+        @change="loadConsultantsAppointments"
+      >
+        <option v-for="(status, index) in statusArr" :key="index" :value="status.id">
+          {{ status.status }}
+        </option>
+      </select>
     </div>
     <!-- breadcrumbs end -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -30,73 +30,53 @@
           <tr>
             <th scope="col" class="px-2 md:px-6 py-3">ID</th>
             <th scope="col" class="px-2 md:px-6 py-3">Name</th>
-            <th scope="col" class="px-2 md:px-6 py-3">Email</th>
             <th scope="col" class="px-2 md:px-6 py-3">Contact Number</th>
-            <th scope="col" class="px-2 md:px-6 py-3">Status</th>
+            <th scope="col" class="px-2 md:px-6 py-3">Slot Details</th>
             <th scope="col" class="px-2 md:px-6 py-3">
-              <span class="sr-only">Edit</span>
+              <span class="sr-only"></span>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
             class="bg-white border-b hover:bg-gray-50"
-            v-for="jobSeeker in jobSeekers.content"
-            :key="jobSeeker.id"
+            v-for="appointment in appointments"
+            :key="appointment.id"
           >
-            <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-              {{ jobSeeker.jobSeekerId }}
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+              {{ appointment.appointmentId }}
+            </th>
+            <td class="px-2 md:px-6 py-4 text-gray-900">
+              {{ appointment.jobSeeker.firstName }} {{ appointment.jobSeeker.lastName }}
             </td>
             <td class="px-2 md:px-6 py-4 text-gray-900">
-              {{ jobSeeker.firstName }} {{ jobSeeker.lastName }}
+              {{ appointment.jobSeeker.contactNumber }}
             </td>
             <td class="px-2 md:px-6 py-4 text-gray-900">
-              {{ jobSeeker.email }}
-            </td>
-            <td class="px-2 md:px-6 py-4 text-gray-900">
-              {{ jobSeeker.contactNumber }}
-            </td>
-            <td class="px-2 md:px-6 py-4 text-gray-900">
-              {{ jobSeeker.isActive == 1 ? "Active" : "Inactive" }}
+              {{ appointment.schedule.title }}
+              ({{ appointment.schedule.startDate }} -
+              {{ appointment.schedule.startTime }} to {{ appointment.schedule.endTime }})
             </td>
             <td
               class="px-2 md:px-6 py-4 text-gray-900 text-right flex gap-x-4 items-center"
+              v-if="appointment.status == 0"
             >
               <div
-                class="font-medium text-blue-600 cursor-pointer"
-                style="background: transparent; color: rgb(37 99 235)"
-                @click="editJobSeeker(jobSeeker)"
+                class="font-medium text-green-600 cursor-pointer"
+                @click="acceptAppointment(appointment)"
               >
-                Edit
+                Accept
               </div>
-              <i
-                class="fa fa-trash text-red-500 cursor-pointer"
-                @click="deleteJobSeeker(jobSeeker)"
-                v-if="checkUserHasAccess(['ROLE_ADMIN'])"
-                aria-hidden="true"
-              ></i>
+              <div
+                class="font-medium text-red-600 cursor-pointer"
+                @click="rejectAppointment(appointment)"
+              >
+                Reject
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
-      <div
-        class="my-3 float-right mx-3"
-        v-if="jobSeekers.content && jobSeekers.content.length > 3"
-      >
-        <pagination
-          v-model="page"
-          :records="[jobSeekers.totalElements]"
-          :per-page="3"
-          :data="{
-            currentPage: jobSeekers.number + 1,
-            totalPages: jobSeekers.totalPages,
-          }"
-          :text="{
-            count: 'Showing page {page} out of {pages}',
-          }"
-          @paginate="loadAllJobSeekers"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -113,29 +93,31 @@ export default {
 
   data() {
     return {
-      search: "",
-      page: 1,
+      selectedStatus: 0,
+      appointments: [],
+      statusArr: [
+        { id: 0, status: "Pending" },
+        { id: 1, status: "Accepted" },
+        { id: 3, status: "Rejected" },
+      ],
     };
   },
 
   computed: {
-    jobSeekers() {
-      return { ...this.$store.getters["job-seeker/getAllJobSeekers"] };
-    },
     loggedInUserRoles() {
       return this.$store.getters["auth-api/getLoggedInUserRoles"];
     },
   },
 
   created() {
-    this.loadAllJobSeekers();
+    this.loadConsultantsAppointments();
   },
 
   mounted() {},
 
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      const required_roles = ["ROLE_ADMIN", "ROLE_CONSULTANT", "ROLE_RECEPTIONIST"];
+      const required_roles = ["ROLE_CONSULTANT"];
       let hasRole = false;
       required_roles.forEach((role) => {
         if (vm.loggedInUserRoles.includes(role)) {
@@ -152,59 +134,61 @@ export default {
   },
 
   methods: {
-    checkUserHasAccess(required_roles) {
-      let hasRole = false;
-      required_roles.forEach((role) => {
-        if (this.loggedInUserRoles.includes(role)) {
-          hasRole = true;
+    loadConsultantsAppointments() {
+      this.$store
+        .dispatch("appointment/loadConsultantsAppointments", this.selectedStatus)
+        .then((res) => {
+          this.appointments = res;
+        });
+    },
+
+    acceptAppointment(appointment) {
+      swal({
+        text: "Do you want to accept this appointment!",
+        buttons: true,
+        dangerMode: false,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.$store
+            .dispatch("appointment/changeStatusOfAppointment", {
+              appointmentId: appointment.appointmentId,
+              status: 1,
+              isAccepted: true,
+            })
+            .then((res) => {
+              this.loadConsultantsAppointments();
+              swal("Success!", "Appointment accepted successfully", "success");
+              this.order = res;
+            })
+            .catch((err) => {});
         }
       });
-      return hasRole;
     },
 
-    loadAllJobSeekers(page = 1) {
-      this.$store
-        .dispatch("job-seeker/loadAllJobSeekersWithPagination", page)
-        .then((res) => {});
-    },
-
-    editJobSeeker({ ...jobSeeker }) {
-      this.$router.push({
-        path: "/dashboard/create-job-seeker",
-        query: { id_: jobSeeker.jobSeekerId },
-      });
-    },
-
-    deleteJobSeeker(jobSeeker) {
+    rejectAppointment(appointment) {
       swal({
         title: "Are you sure?",
-        text:
-          "Do you want to delete this job seeker? Once you delete all the appointment data will be deleted.",
+        text: "Do you want to reject this appointment!",
         icon: "warning",
         buttons: true,
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
           this.$store
-            .dispatch("job-seeker/deleteJobSeeker", jobSeeker.jobSeekerId)
+            .dispatch("appointment/changeStatusOfAppointment", {
+              appointmentId: appointment.appointmentId,
+              status: 3,
+              isAccepted: false,
+            })
             .then((res) => {
-              this.loadAllJobSeekers();
-              swal("Success!", "Consultant deleted successfully!", "success");
-            });
+              this.loadConsultantsAppointments();
+              swal("Success!", "Appointment rejected successfully", "success");
+              this.order = res;
+            })
+            .catch((err) => {});
         }
       });
     },
-
-    searching: _.debounce(function () {
-      this.$store
-        .dispatch("job-seeker/searchJobSeekers", {
-          search_term: this.search,
-          page: this.page,
-        })
-        .then((res) => {
-          this.customers = res;
-        });
-    }, 1000),
   },
 };
 </script>

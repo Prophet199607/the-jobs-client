@@ -63,7 +63,9 @@
             <td class="px-2 md:px-6 py-4 text-gray-900">
               {{ consultant.jobType.jobType }}
             </td>
-            <td class="px-2 md:px-6 py-4 text-gray-900 text-right">
+            <td
+              class="px-2 md:px-6 py-4 text-gray-900 text-right flex gap-x-4 items-center"
+            >
               <div
                 class="font-medium text-blue-600 cursor-pointer"
                 style="background: transparent; color: rgb(37 99 235)"
@@ -71,6 +73,12 @@
               >
                 Edit
               </div>
+              <i
+                class="fa fa-trash text-red-500 cursor-pointer"
+                @click="deleteConsultant(consultant)"
+                v-if="checkUserHasAccess(['ROLE_ADMIN'])"
+                aria-hidden="true"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -140,6 +148,16 @@ export default {
   },
 
   methods: {
+    checkUserHasAccess(required_roles) {
+      let hasRole = false;
+      required_roles.forEach((role) => {
+        if (this.loggedInUserRoles.includes(role)) {
+          hasRole = true;
+        }
+      });
+      return hasRole;
+    },
+
     loadAllConsultantsWithPagination(page = 1) {
       this.$store
         .dispatch("consultant/loadAllConsultantsWithPagination", page)
@@ -150,6 +168,28 @@ export default {
       this.$router.push({
         path: "/dashboard/create-consultant",
         query: { id_: consultant.consultantId },
+      });
+    },
+
+    deleteConsultant(consultant) {
+      swal({
+        title: "Are you sure?",
+        text: "Do you want to delete this consultant?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          this.$store
+            .dispatch("consultant/deleteConsultant", consultant.consultantId)
+            .then((res) => {
+              this.loadAllConsultantsWithPagination();
+              swal("Success!", "Consultant deleted successfully!", "success");
+            })
+            .catch((err) => {
+              swal("Error!", "Cannot delete consultant!", "error");
+            });
+        }
       });
     },
 

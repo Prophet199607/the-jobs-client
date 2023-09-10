@@ -279,7 +279,7 @@ export default {
         this.consultant.user.userName = this.consultant.firstName.toLocaleLowerCase();
         this.consultant.user.fullName =
           this.consultant.firstName + " " + this.consultant.lastName;
-        this.consultant.user.password = "00000";
+        this.consultant.user.password = null;
       }
 
       this.$store

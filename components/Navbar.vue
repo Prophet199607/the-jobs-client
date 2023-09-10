@@ -30,7 +30,7 @@
             <NuxtLink
               v-if="!isUserLoggedIn"
               to="/make-appointment"
-              class="bg-yellow-500 hover:bg-yellow-800 text-white px-4 py-2 rounded-lg"
+              class="bg-yellow-500 hover:bg-transparent hover:text-yellow-500 border transition duration-700 border-yellow-500 text-white px-4 py-2 rounded-lg"
               >Make an Appointment</NuxtLink
             >
             <div v-if="!isUserLoggedIn" class="flex">
@@ -47,7 +47,7 @@
             <NuxtLink
               v-if="checkUserHasAccess(['ROLE_USER'])"
               to="/make-appointment"
-              class="bg-yellow-500 hover:bg-yellow-800 text-white px-4 py-2 rounded-lg"
+              class="bg-yellow-500 hover:bg-transparent hover:text-yellow-500 border transition duration-700 border-yellow-500 text-white px-4 py-2 rounded-lg"
               >Make an Appointment</NuxtLink
             >
             <p

@@ -50,6 +50,22 @@ export const actions = {
     });
   },
 
+  deleteTimeSlot({ commit }, scheduleId) {
+    let authToken = localStorage.getItem("authToken");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await this.$axios.$delete(`/schedule/${scheduleId}`, {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        });
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   saveConsultant({ commit }, payload) {
     let authToken = localStorage.getItem("authToken");
     return new Promise(async (resolve, reject) => {
@@ -83,6 +99,22 @@ export const actions = {
         }
       );
       resolve(data);
+    });
+  },
+
+  deleteConsultant({ commit }, consultantId) {
+    let authToken = localStorage.getItem("authToken");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await this.$axios.$delete(`/consultant/${consultantId}`, {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        });
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
@@ -146,15 +178,49 @@ export const actions = {
     });
   },
 
+  loadAllConsultantsByJobTypeAndCountry({ commit }, payload) {
+    let authToken = localStorage.getItem("authToken");
+    return new Promise(async (resolve, reject) => {
+      const { data } = await this.$axios.$get(
+        `/consultant/job-type/${payload.jobTypeId}/country/${payload.countryId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      );
+      resolve(data);
+    });
+  },
+
   loadSchedulesByConsultant({ commit }, consultantId) {
     let authToken = localStorage.getItem("authToken");
 
     return new Promise(async (resolve, reject) => {
-      const { data } = await this.$axios.$get(`/schedule/${consultantId}`, {
-        headers: {
-          Authorization: "Bearer " + authToken,
-        },
-      });
+      const { data } = await this.$axios.$get(
+        `/schedule/all/consultant/${consultantId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      );
+      resolve(data);
+    });
+  },
+
+  loadAvailableSchedulesByConsultant({ commit }, consultantId) {
+    let authToken = localStorage.getItem("authToken");
+
+    return new Promise(async (resolve, reject) => {
+      const { data } = await this.$axios.$get(
+        `/schedule/available/consultant/${consultantId}`,
+        {
+          headers: {
+            Authorization: "Bearer " + authToken,
+          },
+        }
+      );
       resolve(data);
     });
   },

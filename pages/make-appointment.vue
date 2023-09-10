@@ -9,14 +9,14 @@
     </div>
     <div
       class="col-span-2 min-w-full mx-auto shadow px-3 py-3 rounded overflow-hidden"
-      style="height: 510px"
+      style="height: 565px"
     >
       <h2 class="text-2xl uppercase font-medium mb-1">Make an appointment</h2>
       <p class="text-gray-600 mb-6 text-sm">
         Create an appointment with our best consultants
       </p>
       <ValidationObserver v-slot="{ handleSubmit }" ref="form">
-        <form @submit.prevent="handleSubmit(registerJobSeeker)">
+        <form @submit.prevent="handleSubmit(saveAppointment)">
           <div class="space-y-4">
             <!-- registration form start -->
             <div class="col-span-12 md:col-span-8 rounded">
@@ -30,6 +30,7 @@
                     <select
                       class="block w-full text-sm border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                       v-model="jobTypeId"
+                      @change="resetCountry"
                     >
                       <option value="0">-- select --</option>
                       <option
@@ -49,6 +50,7 @@
                       <select
                         class="block w-full text-sm border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
                         v-model="countryId"
+                        @change="loadConsultants"
                       >
                         <option value="0">-- select --</option>
                         <option
@@ -67,21 +69,32 @@
                   <!-- single input end -->
                   <!-- single input start -->
                   <div>
-                    <label for="" class="text-gray-600 mb-2 block text-sm"
-                      >Available Consultants</label
-                    >
+                    <div class="flex gap-x-4">
+                      <label for="" class="text-gray-600 mb-2 block text-sm"
+                        >Available Consultants</label
+                      >
+                      <label
+                        for=""
+                        v-show="showAlert_"
+                        class="mb-2 block text-sm text-orange-500 font-medium"
+                      >
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> No
+                        Available consultants found!</label
+                      >
+                    </div>
                     <ValidationProvider v-slot="{ errors }" rules="select">
                       <select
                         class="block w-full text-sm border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                        v-model="countryId"
+                        v-model="appointment.consultant.consultantId"
+                        @change="loadtimeSlots"
                       >
                         <option value="0">-- select --</option>
                         <option
-                          v-for="(country, index) in countries"
+                          v-for="(consultant, index) in consultants"
                           :key="index"
-                          :value="country.countryId"
+                          :value="consultant.consultantId"
                         >
-                          {{ country.countryName }}
+                          {{ consultant.firstName }} {{ consultant.lastName }}
                         </option>
                       </select>
                       <span class="input-invalid-message text-red-500 text-xs">
@@ -92,21 +105,32 @@
                   <!-- single input end -->
                   <!-- single input start -->
                   <div>
-                    <label for="" class="text-gray-600 mb-2 block text-sm"
-                      >Available Time Slots</label
-                    >
+                    <div class="flex gap-x-4">
+                      <label for="" class="text-gray-600 mb-2 block text-sm"
+                        >Available Time Slots</label
+                      >
+                      <label
+                        for=""
+                        v-show="showAlert2_"
+                        class="mb-2 block text-sm text-orange-500 font-medium"
+                      >
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i> No
+                        Available schedules found!</label
+                      >
+                    </div>
                     <ValidationProvider v-slot="{ errors }" rules="select">
                       <select
                         class="block w-full text-sm border border-gray-300 px-4 py-2 text-gray-600 rounded placeholder-gray-400 focus:border-primary focus:border-2 focus:ring-0"
-                        v-model="countryId"
+                        v-model="appointment.schedule.scheduleId"
                       >
                         <option value="0">-- select --</option>
                         <option
-                          v-for="(country, index) in countries"
+                          v-for="(schedule, index) in schedules"
                           :key="index"
-                          :value="country.countryId"
+                          :value="schedule.scheduleId"
                         >
-                          {{ country.countryName }}
+                          {{ schedule.start | formattedDate3 }} to
+                          {{ schedule.end | formattedDate3 }}
                         </option>
                       </select>
                       <span class="input-invalid-message text-red-500 text-xs">
@@ -150,19 +174,23 @@ export default {
     return {
       countryId: 0,
       jobTypeId: 0,
-      job_seeker: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        contactNumber: "",
-        isActive: true,
-        user: {
-          userName: "",
-          password: "",
-          passwordConfirmation: "",
+      appointment: {
+        status: 0,
+        isAccepted: false,
+        consultant: {
+          consultantId: 0,
+        },
+        schedule: {
+          scheduleId: 0,
+        },
+        jobSeeker: {
+          jobSeekerId: 0,
         },
       },
-      agreement: false,
+      consultants: [],
+      schedules: [],
+      showAlert_: false,
+      showAlert2_: false,
     };
   },
 
@@ -208,37 +236,84 @@ export default {
       this.$store.dispatch("job-type/loadAllJobTypes");
     },
 
-    registerJobSeeker() {
-      if (this.agreement) {
-        this.job_seeker.user.email = this.job_seeker.email;
-        this.job_seeker.user.fullName =
-          this.job_seeker.firstName + " " + this.job_seeker.lastName;
+    loadConsultants() {
+      this.consultants = [];
+      this.appointment.consultant.consultantId = 0;
+      this.schedules = [];
+      this.appointment.schedule.scheduleId = 0;
+      this.showAlert2_ = false;
+      this.$store
+        .dispatch("consultant/loadAllConsultantsByJobTypeAndCountry", {
+          countryId: this.countryId,
+          jobTypeId: this.jobTypeId,
+        })
+        .then((res) => {
+          this.showAlert();
+          this.consultants = res;
+        });
+    },
 
-        this.$store
-          .dispatch("job-seeker/register", { job_seeker: this.job_seeker })
-          .then((res) => {
-            this.clearForm();
-            swal("Success!", "You have successfully registered", "success");
-            this.$router.push({
-              path: "/login",
-            });
-          });
-      }
+    resetCountry() {
+      this.countryId = 0;
+      this.showAlert_ = false;
+      this.appointment.schedule.scheduleId = 0;
+      this.showAlert2_ = false;
+    },
+
+    loadtimeSlots() {
+      this.$store
+        .dispatch(
+          "consultant/loadAvailableSchedulesByConsultant",
+          this.appointment.consultant.consultantId
+        )
+        .then((res) => {
+          this.showAlert2();
+          this.schedules = res;
+        });
+    },
+
+    saveAppointment() {
+      let loggedUserId = localStorage.getItem("loggedUserId");
+      this.appointment.jobSeeker.jobSeekerId = loggedUserId;
+      this.$store
+        .dispatch("appointment/saveAppointment", { appointment: this.appointment })
+        .then((res) => {
+          this.clearForm();
+          swal("Success!", "Appointment created successfully!", "success");
+        });
+    },
+
+    showAlert() {
+      setTimeout(() => {
+        this.showAlert_ = false;
+        if (this.consultants.length == 0 && this.countryId != 0) {
+          this.showAlert_ = true;
+        }
+      }, 100);
+    },
+
+    showAlert2() {
+      setTimeout(() => {
+        this.showAlert_ = false;
+        if (this.schedules.length == 0) {
+          this.showAlert2_ = true;
+        }
+      }, 100);
     },
 
     clearForm() {
       this.$refs.form.reset();
-      this.job_seeker = {
-        jobSeekerId: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        contactNumber: "",
-        isActive: true,
-        user: {
-          userName: "",
-          password: "",
-          passwordConfirmation: "",
+      this.appointment = {
+        status: 0,
+        isAccepted: false,
+        consultant: {
+          consultantId: 0,
+        },
+        schedule: {
+          scheduleId: 0,
+        },
+        jobSeeker: {
+          jobSeekerId: 0,
         },
       };
     },
